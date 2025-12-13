@@ -168,7 +168,7 @@ Refer to these examples as starting points for your own programs, and consult `z
 
 ## Documentation
 
-Coming soon.
+* Blog post: [z8086: Rebuilding the 8086 from Original Microcode](https://nand2mario.github.io/posts/2025/z8086/)
 
 <!-- - **[`doc/z8086.md`](../../doc/z8086.md)**: Comprehensive developer guide covering architecture, microcode, implementation details, and signal reference -->
 
