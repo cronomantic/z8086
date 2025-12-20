@@ -60,6 +60,9 @@ TEST_PROGRAMS = [
     "strings",
     "rep",
     "interrupt",
+
+    # New regression tests
+    "01.xor_after_add",    
 ]
 
 # Per-program flag comparison configuration.

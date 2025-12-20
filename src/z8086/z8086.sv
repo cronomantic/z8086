@@ -564,6 +564,14 @@ always @(posedge clk) begin
     end else begin
         if (~stall | SC)
             uc <= ucode_rom[uaddr][20:0];
+
+        // Advance CR and set ROME
+        ROME <= stall ? ROME : 1'b0;
+        if (EXEC & ~RNI & ~stall) begin  // normal execution
+            ROME <= not_halted;        
+            CR <= CR + 4'b1;
+        end
+
         // First cycle: load new instruction
         if (FC) begin                           
             if (interrupt_request & ~delay_interrupt) begin
@@ -667,11 +675,6 @@ always @(posedge clk) begin
                 ea_uses_bp <= 1'b0;
             end
         end
-        // Advance CR and set ROME
-        if (~SC & ~FC & EXEC & ~stall) begin  
-            ROME <= not_halted;        // default to ROME=1
-            CR <= CR + 4'b1;
-        end
         // Branches
         if (ROME & ~stall) begin
             automatic reg taken;
@@ -720,8 +723,6 @@ always @(posedge clk) begin
             end
         end
         // Finishing instruction
-        if (ROME & RNI & ~SC | SC & g_1bl & ~g_prefix)  // microcode is not ready
-            ROME <= 1'b0;
         if (ROME & RNI | SC & g_1bl & ~g_prefix) begin  // mark 1st instruction done
             dbg_first_done <= 1'b1;
         end
